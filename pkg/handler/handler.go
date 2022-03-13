@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/max-sanch/AuthJWT/pkg/service"
+	"github.com/spf13/viper"
 )
 
 type Handler struct {
@@ -14,6 +15,10 @@ func NewHandler(services *service.Service) *Handler {
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
+	if viper.GetString("releaseMode") == "True" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	router := gin.New()
 
 	auth := router.Group("/auth")
@@ -27,7 +32,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		users := api.Group("/users")
 		{
 			users.POST("/", h.createUser)
-			users.DELETE("/:id", h.deleteUser)
+			users.DELETE("/", h.deleteUser)
 		}
 	}
 

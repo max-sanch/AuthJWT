@@ -1,13 +1,17 @@
 package service
 
-import "github.com/max-sanch/AuthJWT/pkg/repository"
+import (
+	"github.com/max-sanch/AuthJWT"
+	"github.com/max-sanch/AuthJWT/pkg/repository"
+)
 
 type Authentication interface {
 
 }
 
 type User interface {
-
+	CreateUser(user auth_jwt.User) (string, error)
+	DeleteUser(user auth_jwt.User) (string, error)
 }
 
 type Service struct {
@@ -16,5 +20,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		User: NewUserService(repos.User),
+	}
 }

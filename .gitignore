@@ -1,2 +1,4 @@
 # IntelliJ / GoLand IDE
 .idea
+
+.env
