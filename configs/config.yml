@@ -1,8 +1,8 @@
 port: "8080"
-releaseMode: "False" # True or False
+releaseMode: "True" # True or False
 
 db:
-  host: "localhost"
+  host: "mdb"
   port: "27017"
   username: "root"
   name: "admin"
