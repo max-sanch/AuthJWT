@@ -5,7 +5,11 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-const usersCollection = "users"
+const (
+	usersCollection = "users"
+	refreshCollection = "refresh"
+	notFoundMessage = "not found"
+)
 
 type Config struct {
 	Host		string

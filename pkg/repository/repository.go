@@ -6,7 +6,9 @@ import (
 )
 
 type Authentication interface {
-
+	GetUser(string) (auth_jwt.User, error)
+	SetRefresh(string, string) error
+	GetRefresh(string) (string, error)
 }
 
 type User interface {
@@ -21,6 +23,7 @@ type Repository struct {
 
 func NewRepository(db *mgo.Database) *Repository {
 	return &Repository{
+		Authentication: NewAuthMongo(db),
 		User: NewUserMongo(db),
 	}
 }

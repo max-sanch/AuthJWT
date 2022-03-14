@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/max-sanch/AuthJWT"
 )
 
@@ -16,7 +17,7 @@ func NewUserMongo(db *mgo.Database) *UserMongo {
 
 func (u *UserMongo) CreateUser(user auth_jwt.User) (string, error) {
 	var result interface{}
-	if err := u.db.C(usersCollection).Find(&user).One(&result); err != nil && err.Error() != "not found" {
+	if err := u.db.C(usersCollection).Find(&user).One(&result); err != nil && err.Error() != notFoundMessage {
 		return "", err
 	}
 
@@ -32,6 +33,11 @@ func (u *UserMongo) CreateUser(user auth_jwt.User) (string, error) {
 }
 
 func (u *UserMongo) DeleteUser(user auth_jwt.User) (string, error) {
+	err := u.db.C(refreshCollection).Remove(bson.M{"guid": user.GUID})
+	if err != nil && err.Error() != notFoundMessage {
+		return "", err
+	}
+
 	if err := u.db.C(usersCollection).Remove(&user); err != nil {
 		return "", err
 	}

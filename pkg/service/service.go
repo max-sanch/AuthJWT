@@ -6,12 +6,13 @@ import (
 )
 
 type Authentication interface {
-
+	GenerateTokens(string) (map[string]string, error)
+	RefreshTokens(string, string) (map[string]string, error)
 }
 
 type User interface {
-	CreateUser(user auth_jwt.User) (string, error)
-	DeleteUser(user auth_jwt.User) (string, error)
+	CreateUser(auth_jwt.User) (string, error)
+	DeleteUser(auth_jwt.User) (string, error)
 }
 
 type Service struct {
@@ -21,6 +22,7 @@ type Service struct {
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
+		Authentication: NewAuthService(repos.Authentication),
 		User: NewUserService(repos.User),
 	}
 }
