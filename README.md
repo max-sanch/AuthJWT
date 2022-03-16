@@ -41,6 +41,8 @@
 
 4) Перейдите в директорию проекта и введите:
 
+       go mod download
+
        go run cmd/main.go
 
 ### <a name="endpoints"></a>Список эндпоинтов
